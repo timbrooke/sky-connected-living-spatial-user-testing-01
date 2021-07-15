@@ -8,6 +8,7 @@ type BoxProps = {
   height: number;
   corner: number;
   id: string;
+  image: string;
 };
 
 type BoxDivProps = {
@@ -16,21 +17,31 @@ type BoxDivProps = {
   corner: number;
   x: number;
   y: number;
+  image: string;
 };
 
 const BoxDiv = styled.div<BoxDivProps>`
-  width: ${(props) => props.width - 4}px;
-  height: ${(props) => props.height - 4}px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   border-radius: ${(props) => props.corner}px;
-  border: 2px solid white;
   position: absolute;
   top: ${(props) => props.y}px;
   left: ${(props) => props.x}px;
-  background-color: aqua;
+  background-image: url(${(props) => props.image});
+  background-size: cover;
 `;
 
-const Box: FC<BoxProps> = ({ id, x, y, width, height, corner }) => {
-  return <BoxDiv x={x} y={y} width={width} height={height} corner={corner} />;
+const Box: FC<BoxProps> = ({ id, x, y, width, height, corner, image }) => {
+  return (
+    <BoxDiv
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      corner={corner}
+      image={image}
+    />
+  );
 };
 
 export default Box;

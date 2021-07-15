@@ -1,6 +1,7 @@
 import { FC, ReactElement } from "react";
 import Box from "./Box";
 import styled from "@emotion/styled";
+import {padLeadingZeros} from "../../../utils/utils";
 
 type GridProps = {
   columns: number;
@@ -69,10 +70,8 @@ function generateBoxes({
       const x = horzMargin + i * (boxWidth + spacing);
       const y = vertMargin + j * (boxHeight + spacing);
       const id = `box-${i}-${j}`;
-
-
-      console.log(x,y)
-
+      const num = padLeadingZeros(i + (columns * j) % 32,2);
+      const image = `assets/tiles/${num}.jpg`
       const box = (
         <Box
           id={id}
@@ -82,6 +81,7 @@ function generateBoxes({
           x={x}
           y={y}
           corner={8}
+          image={image}
         />
       );
       boxes.push(box);
@@ -97,7 +97,6 @@ type ContainerProps = {
 
 const Container = styled.div<ContainerProps>`
   position: relative;
-  background-color: deeppink;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
 `;
