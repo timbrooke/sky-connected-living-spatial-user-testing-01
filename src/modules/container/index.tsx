@@ -1,17 +1,25 @@
 import Grid from "../grid";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Layer from "./components/Layer";
 import Cursor from "./components/Cursor";
 import styled from "@emotion/styled";
 import { InteractionMessage } from "../grid/components/Grid";
 import { Subject } from "rxjs";
 import SettingsMenu from "./components/Settings/SettingsMenu";
+import { createStores, defaultSettings } from "./stores";
+import { createServices } from "./services";
+import { ModuleContext, useRxState } from "@ixd-group/react-utils";
 
 const Wrapper = styled.div`
   overflow: hidden;
 `;
 
 const Container = () => {
+  const stores = useMemo(createStores, []);
+  const services = useMemo(createServices, []);
+
+  const [settings] = useRxState([stores.atoms.settings$]);
+
   const interactionStreamRef = useRef<Subject<InteractionMessage>>(
     new Subject()
   );
@@ -56,16 +64,12 @@ const Container = () => {
     };
   }, []);
 
-  function handleSettingChanged(updatedSetting: any) {
-    console.log("Updated", updatedSetting);
-  }
-
   return (
-    <div>
+    <ModuleContext.Provider value={{ stores, services }}>
       <Layer>
         <Grid
-          columns={5}
-          rows={2}
+          columns={settings.cols}
+          rows={settings.rows}
           width={windowDimensions.width}
           height={windowDimensions.height}
           borderRatio={0.25}
@@ -78,8 +82,8 @@ const Container = () => {
           <Cursor x={cursorPosition.x} y={cursorPosition.y} />
         </Wrapper>
       </Layer>
-      <SettingsMenu settingsCallback={handleSettingChanged} />
-    </div>
+      <SettingsMenu />
+    </ModuleContext.Provider>
   );
 };
 

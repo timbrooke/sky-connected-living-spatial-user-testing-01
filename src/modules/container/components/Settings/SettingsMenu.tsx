@@ -8,37 +8,22 @@ import DatGui, {
   DatNumber,
   DatSelect,
 } from "react-dat-gui";
-
-export type InteractionMode = "Standard" | "Proximity" | "Focus" | "Swipe";
-
-export type Settings = {
-  size: number;
-  cols: number;
-  rows: number;
-  gestureZoom: number;
-  backgroundColour: string;
-  interactionMode: InteractionMode;
-  cursorSize: number;
-  hideCursor: boolean;
-};
+import { InteractionMode, Settings } from "../../types";
+import { Stores} from "../../stores";
+import { useStores, useRxState } from "@ixd-group/react-utils";
 
 type SettingsGuiProps = {
   settingsCallback?: (settings: Settings) => void;
 };
 
-export const defaultSettings: Settings = {
-  size: 100,
-  cols: 5,
-  rows: 2,
-  gestureZoom: 1.2,
-  backgroundColour: "#ECECEC",
-  cursorSize: 20,
-  hideCursor: false,
-  interactionMode: "Standard",
-};
+
 
 const SettingsGui: FC<SettingsGuiProps> = ({ settingsCallback }) => {
-  const [settings, setSettings] = useState<Settings>(defaultSettings);
+
+
+  const store = useStores<Stores>()
+  const settings = useRxState(store.atoms.settings$)
+  const setSettings = store.actions.setSettings;
 
   const interactionModes: InteractionMode[] = [
     "Standard",
@@ -50,15 +35,10 @@ const SettingsGui: FC<SettingsGuiProps> = ({ settingsCallback }) => {
   function handleUpdate(updates: any) {
     const updatedInteractionMode: InteractionMode = updates.interactionMode;
     if (updatedInteractionMode !== settings.interactionMode) {
-      if (
+      updates.hideCursor =
         updatedInteractionMode === "Standard" ||
         updatedInteractionMode === "Proximity" ||
-        updatedInteractionMode === "Focus"
-      ) {
-        updates.hideCursor = true;
-      } else {
-        updates.hideCursor = false;
-      }
+        updatedInteractionMode === "Focus";
     }
     const newSettings: Settings = { ...settings, ...updates };
     if (settingsCallback) {
