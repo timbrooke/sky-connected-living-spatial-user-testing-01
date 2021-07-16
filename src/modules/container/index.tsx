@@ -5,6 +5,7 @@ import Cursor from "./components/Cursor";
 import styled from "@emotion/styled";
 import { InteractionMessage } from "../grid/components/Grid";
 import { Subject } from "rxjs";
+import SettingsMenu from "./components/Settings/SettingsMenu";
 
 const Wrapper = styled.div`
   overflow: hidden;
@@ -55,6 +56,10 @@ const Container = () => {
     };
   }, []);
 
+  function handleSettingChanged(updatedSetting: any) {
+    console.log("Updated", updatedSetting);
+  }
+
   return (
     <div>
       <Layer>
@@ -73,6 +78,7 @@ const Container = () => {
           <Cursor x={cursorPosition.x} y={cursorPosition.y} />
         </Wrapper>
       </Layer>
+      <SettingsMenu settingsCallback={handleSettingChanged} />
     </div>
   );
 };

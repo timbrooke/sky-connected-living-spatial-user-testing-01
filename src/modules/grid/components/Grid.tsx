@@ -1,8 +1,8 @@
 import { FC, ReactElement, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { padLeadingZeros } from "../../../utils/utils";
-import BoxWithMessages, { BoxPackage } from "./BoxWithMessages";
 import { Observable, Subject } from "rxjs";
+import SelectableBox, { BoxMessage, BoxPackage } from "./SelectableBox";
 
 export type InteractionMessage = {
   kind: "click" | "unselect all";
@@ -100,7 +100,7 @@ function createBoxesFromData(
   boxMessages$: Observable<BoxPackage>
 ): ReactElement[] {
   return boxData.map((data) => (
-    <BoxWithMessages
+    <SelectableBox
       id={data.id}
       key={data.id}
       width={data.boxWidth}
@@ -132,18 +132,13 @@ function calculateOverBox(
   return boxIDs;
 }
 
-function calculateRollout(
+function calculateRolloverChanges(
   lastRollovers: string[],
   currentRollovers: string[]
-): string[] {
-  const rollouts: string[] = [];
-  lastRollovers.forEach((id) => {
-    const result = currentRollovers.find((n) => id === n);
-    if (result === undefined) {
-      rollouts.push(id);
-    }
-  });
-  return rollouts;
+) {
+  let rollouts = lastRollovers.filter((x) => !currentRollovers.includes(x));
+  let rollovers = currentRollovers.filter((x) => !lastRollovers.includes(x));
+  return { rollouts, rollovers };
 }
 
 type ContainerProps = {
@@ -166,27 +161,31 @@ const Grid: FC<GridProps> = ({
   cursor,
   interactionStream$,
 }) => {
-  const cursorRef = useRef<{ x: number; y: number }>(cursor);
   const boxMessageStreamRef = useRef(new Subject<BoxPackage>());
-  const boxDataRef = useRef<BoxData[]>([]);
   const lastRolloversRef = useRef<string[]>([]);
+  const boxDataRef = useRef<BoxData[]>([]);
+  const cursorRef = useRef<{ x: number; y: number }>(cursor);
+  const selectedBoxesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    const boxIDs = calculateOverBox(cursor, boxDataRef.current);
-    boxIDs.forEach((id) => {
-      boxMessageStreamRef.current.next({
-        id,
-        message: "over",
-      });
-    });
-    const rollOuts = calculateRollout(lastRolloversRef.current, boxIDs);
-    rollOuts.forEach((id) => {
+    const currentOvers = calculateOverBox(cursor, boxDataRef.current);
+    const { rollouts, rollovers } = calculateRolloverChanges(
+      lastRolloversRef.current,
+      currentOvers
+    );
+    rollouts.forEach((id) => {
       boxMessageStreamRef.current.next({
         id,
         message: "off",
       });
     });
-    lastRolloversRef.current = boxIDs;
+    rollovers.forEach((id) => {
+      boxMessageStreamRef.current.next({
+        id,
+        message: "over",
+      });
+    });
+    lastRolloversRef.current = currentOvers;
     cursorRef.current = cursor;
   }, [cursor]);
 
@@ -194,10 +193,22 @@ const Grid: FC<GridProps> = ({
     const observable = interactionStream$.subscribe((next) => {
       if (next.kind === "click") {
         const boxIDs = calculateOverBox(cursorRef.current, boxDataRef.current);
+
         boxIDs.forEach((id) => {
+
+          // Toggle Select
+          let message: BoxMessage;
+          if (selectedBoxesRef.current.has(id)) {
+            selectedBoxesRef.current.delete(id);
+            message = "unselect";
+          } else {
+            selectedBoxesRef.current.add(id);
+            message = "select";
+          }
+
           boxMessageStreamRef.current.next({
             id,
-            message: "select",
+            message,
           });
         });
       }
@@ -207,13 +218,14 @@ const Grid: FC<GridProps> = ({
     };
   }, [interactionStream$]);
 
-  const boxData = generateBoxData(
-    calculateSizing(columns, rows, width, height, borderRatio)
-  );
+  useEffect(() => {
+    boxDataRef.current = generateBoxData(
+      calculateSizing(columns, rows, width, height, borderRatio)
+    );
+  }, [columns, rows, width, height, borderRatio]);
 
-  boxDataRef.current = boxData;
   const boxes = createBoxesFromData(
-    boxData,
+    boxDataRef.current,
     boxMessageStreamRef.current as Observable<BoxPackage>
   );
 

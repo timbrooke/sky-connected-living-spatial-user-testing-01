@@ -21,7 +21,6 @@ type BoxDivProps = {
   y: number;
   image: string;
   scale: number;
-  coverOpacity: number;
 };
 
 const BoxDiv = styled.div<BoxDivProps>`
@@ -34,7 +33,6 @@ const BoxDiv = styled.div<BoxDivProps>`
   background-image: url(${(props) => props.image});
   background-size: cover;
   transform: scale(${(props) => props.scale});
-  opacity: ${(props) => props.coverOpacity};
   transition: transform 0.3s ease-in-out;
 `;
 
@@ -58,7 +56,6 @@ const Box: FC<BoxProps> = ({
       corner={corner}
       image={image}
       scale={scale}
-      coverOpacity={coverOpacity}
     />
   );
 };
