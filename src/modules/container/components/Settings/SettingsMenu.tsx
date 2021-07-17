@@ -42,8 +42,6 @@ const SettingsGui: FC<SettingsGuiProps> = ({ settingsCallback }) => {
   }
 
   function handleResetSelection() {
-    // TODO Handle Reset Selection
-    console.log("Reset Selection");
     store.actions.clearSelections();
   }
 

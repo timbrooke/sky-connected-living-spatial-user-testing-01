@@ -92,6 +92,7 @@ const Container = () => {
             borderRatio={settings.spacing}
             cursor={{ x: cursorPosition.x, y: cursorPosition.y }}
             interactionStream$={interactionStreamRef.current}
+            interactionMode={settings.interactionMode}
           />
         </div>
       </Layer>
