@@ -163,7 +163,9 @@ const Grid: FC<GridProps> = ({
 }) => {
   const boxMessageStreamRef = useRef(new Subject<BoxPackage>());
   const lastRolloversRef = useRef<string[]>([]);
-  const boxDataRef = useRef<BoxData[]>([]);
+  const boxDataRef = useRef<BoxData[]>(
+    generateBoxData(calculateSizing(columns, rows, width, height, borderRatio))
+  );
   const cursorRef = useRef<{ x: number; y: number }>(cursor);
   const selectedBoxesRef = useRef<Set<string>>(new Set());
 
@@ -191,11 +193,20 @@ const Grid: FC<GridProps> = ({
 
   useEffect(() => {
     const observable = interactionStream$.subscribe((next) => {
+
+      if(next.kind === "unselect all"){
+        Array.from(selectedBoxesRef.current).forEach(id => {
+          boxMessageStreamRef.current.next({
+            id,
+            message:"unselect",
+          });
+        })
+        selectedBoxesRef.current.clear();
+      }
+
       if (next.kind === "click") {
         const boxIDs = calculateOverBox(cursorRef.current, boxDataRef.current);
-
         boxIDs.forEach((id) => {
-
           // Toggle Select
           let message: BoxMessage;
           if (selectedBoxesRef.current.has(id)) {

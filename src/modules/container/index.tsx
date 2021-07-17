@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { InteractionMessage } from "../grid/components/Grid";
 import { Subject } from "rxjs";
 import SettingsMenu from "./components/Settings/SettingsMenu";
-import { createStores, defaultSettings } from "./stores";
+import { createStores } from "./stores";
 import { createServices } from "./services";
 import { ModuleContext, useRxState } from "@ixd-group/react-utils";
 
@@ -17,22 +17,30 @@ const Wrapper = styled.div`
 const Container = () => {
   const stores = useMemo(createStores, []);
   const services = useMemo(createServices, []);
-
   const [settings] = useRxState([stores.atoms.settings$]);
-
   const interactionStreamRef = useRef<Subject<InteractionMessage>>(
     new Subject()
   );
-
   const [cursorPosition, setCursorPosition] = useState({
     x: 100,
     y: 100,
   });
-
   const [windowDimensions, setWindowDimensions] = useState({
-    width: 800,
-    height: 600,
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
+
+  useEffect(() => {
+    const observer = stores.streams.commands$.subscribe((next) => {
+      if (next.command === "clearSelection") {
+        interactionStreamRef.current.next({ kind: "unselect all" });
+      }
+    });
+  }, [stores]);
+
+  useEffect(() => {
+    document.body.style.backgroundColor = settings.backgroundColour;
+  }, [settings.backgroundColour]);
 
   useEffect(() => {
     function handleResize() {
@@ -66,16 +74,26 @@ const Container = () => {
 
   return (
     <ModuleContext.Provider value={{ stores, services }}>
-      <Layer>
-        <Grid
-          columns={settings.cols}
-          rows={settings.rows}
-          width={windowDimensions.width}
-          height={windowDimensions.height}
-          borderRatio={0.25}
-          cursor={{ x: cursorPosition.x, y: cursorPosition.y }}
-          interactionStream$={interactionStreamRef.current}
-        />
+      <Layer style={{ height: "100%" }}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Grid
+            columns={settings.cols}
+            rows={settings.rows}
+            width={(windowDimensions.width * settings.size) / 100}
+            height={(windowDimensions.height * settings.size) / 100}
+            borderRatio={settings.spacing}
+            cursor={{ x: cursorPosition.x, y: cursorPosition.y }}
+            interactionStream$={interactionStreamRef.current}
+          />
+        </div>
       </Layer>
       <Layer>
         <Wrapper>
