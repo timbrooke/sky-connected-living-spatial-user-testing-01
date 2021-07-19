@@ -1,9 +1,11 @@
 import { FC } from "react";
 import { Positionable } from "../Layer";
 
-type CursorProps = { x: number; y: number };
+type CursorProps = { x: number; y: number; visible: boolean };
 
-const Cursor: FC<CursorProps> = ({ x, y }) => {
+const Cursor: FC<CursorProps> = ({ x, y, visible }) => {
+  if (!visible) return <Positionable x={0} y={0} />;
+
   return (
     <Positionable x={x - 42} y={y - 42}>
       <svg

@@ -13,3 +13,5 @@ export type Settings = {
 };
 
 export type Command = { command: "clearSelection" };
+
+export type CursorData = { x: number; y: number; visible: boolean };

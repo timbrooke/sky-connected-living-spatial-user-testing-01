@@ -15,7 +15,7 @@ type GridProps = {
   width: number;
   height: number;
   borderRatio: number;
-  cursor: { x: number; y: number };
+  cursor: { x: number; y: number; visible: boolean };
   interactionStream$: Observable<InteractionMessage>;
   interactionMode: InteractionMode;
 };
@@ -141,8 +141,8 @@ function focusOverBox(
 ): string[] {
   const rollovers = standardOverBox(cursor, boxData);
   if (rollovers.length === 0) {
-    if(lastRollovers.length === 0){
-      return ["box-0-0"]
+    if (lastRollovers.length === 0) {
+      return ["box-0-0"];
     }
     return lastRollovers;
   } else {
@@ -221,10 +221,11 @@ const Grid: FC<GridProps> = ({
   const boxDataRef = useRef<BoxData[]>(
     generateBoxData(calculateSizing(columns, rows, width, height, borderRatio))
   );
-  const cursorRef = useRef<{ x: number; y: number }>(cursor);
+  const cursorRef = useRef<{ x: number; y: number; visible: boolean }>(cursor);
   const selectedBoxesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
+    //if (cursorRef.current.visible) {
     const currentOvers = calculateOverBox(
       interactionMode,
       cursor,
@@ -249,7 +250,8 @@ const Grid: FC<GridProps> = ({
     });
     lastRolloversRef.current = currentOvers;
     cursorRef.current = cursor;
-  }, [cursor]);
+    // }
+  }, [cursor, interactionMode]);
 
   useEffect(() => {
     const observable = interactionStream$.subscribe((next) => {
@@ -265,6 +267,8 @@ const Grid: FC<GridProps> = ({
 
       if (next.kind === "click") {
         const boxIDs = lastRolloversRef.current;
+
+        console.log("CLIcK BOX IDs", boxIDs);
 
         boxIDs.forEach((id) => {
           // Toggle Select
