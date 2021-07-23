@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import "react-dat-gui/dist/index.css";
 import DatGui, {
+  DatBoolean,
   DatButton,
   DatColor,
   DatFolder,
@@ -58,6 +59,12 @@ const SettingsGui: FC<SettingsGuiProps> = ({ settingsCallback }) => {
         <DatNumber path="rows" label="rows" min={1} max={5} step={1} />
         <DatNumber path="spacing" label="spacing" min={0} max={2} step={0.25} />
         <DatColor path={"backgroundColour"} label={"background"} />
+        <DatBoolean path={"showVideo"} label={"show video"} />
+        <DatSelect
+          options={["right", "left"]}
+          path={"handedness"}
+          label={"hand"}
+        />
       </DatFolder>
     </DatGui>
   );

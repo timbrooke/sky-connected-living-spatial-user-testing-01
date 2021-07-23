@@ -13,6 +13,8 @@ export const defaultSettings: Settings = {
   hideCursor: false,
   interactionMode: "Standard",
   spacing: 0.25,
+  handedness: "right",
+  showVideo: false,
 };
 
 export const createStores = () => {

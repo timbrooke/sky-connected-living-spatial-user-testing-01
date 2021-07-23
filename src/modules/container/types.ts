@@ -10,6 +10,8 @@ export type Settings = {
   cursorSize: number;
   hideCursor: boolean;
   spacing: number;
+  handedness: "left" | "right"
+  showVideo: boolean;
 };
 
 export type Command = { command: "clearSelection" };

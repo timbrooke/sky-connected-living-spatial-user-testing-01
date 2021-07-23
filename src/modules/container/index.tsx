@@ -12,12 +12,14 @@ import { ModuleContext, useRxState } from "@ixd-group/react-utils";
 import ComputerVision from "../computervision/index.";
 import Dynamics from "../computervision/Dynamics";
 import { ComputerVisionData } from "../computervision/types";
+import { Dimmer, Loader } from "semantic-ui-react";
 
 const Wrapper = styled.div`
   overflow: hidden;
 `;
 
 const Container = () => {
+  const [visionReady, setVisionReady] = useState(false);
   const once = useRef<number>(0);
   const stores = useMemo(createStores, []);
   const services = useMemo(createServices, []);
@@ -27,7 +29,7 @@ const Container = () => {
     new Subject()
   );
 
-  // Move version
+  // Mouse version
   /*
   const [cursorPosition, setCursorPosition] = useState({
     x: 100,
@@ -99,6 +101,9 @@ const Container = () => {
       const dynamics = new Dynamics();
       dynamics.attachToData(data);
       dynamics.cursor.subscribe((cursorPt) => {
+        if (!visionReady) {
+          setVisionReady(true);
+        }
         stores.actions.updateCursor(cursorPt);
       });
 
@@ -137,13 +142,18 @@ const Container = () => {
             interactionStream$={interactionStreamRef.current}
             interactionMode={settings.interactionMode}
           />
+          <Dimmer active={!visionReady}>
+            <div>
+              <Loader active={!visionReady}>Initialising ...</Loader>
+            </div>
+          </Dimmer>
         </div>
       </Layer>
       <Layer>
         <div style={{ transform: "scale(-0.25,0.25) translate(100%,-100%)" }}>
           <ComputerVision
             getObservables={handleVisionData}
-            showCanvas={true}
+            showCanvas={settings.showVideo}
           />
         </div>
       </Layer>
