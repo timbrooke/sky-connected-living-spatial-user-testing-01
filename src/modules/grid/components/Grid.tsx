@@ -267,9 +267,6 @@ const Grid: FC<GridProps> = ({
 
       if (next.kind === "click") {
         const boxIDs = lastRolloversRef.current;
-
-        console.log("CLIcK BOX IDs", boxIDs);
-
         boxIDs.forEach((id) => {
           // Toggle Select
           let message: BoxMessage;

@@ -4,7 +4,7 @@ import Layer from "./components/Layer";
 import Cursor from "./components/Cursor";
 import styled from "@emotion/styled";
 import { InteractionMessage } from "../grid/components/Grid";
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import SettingsMenu from "./components/Settings/SettingsMenu";
 import { createStores } from "./stores";
 import { createServices } from "./services";
@@ -25,6 +25,9 @@ const Container = () => {
   const services = useMemo(createServices, []);
   const [settings] = useRxState([stores.atoms.settings$]);
   const [visionCursor] = useRxState([stores.atoms.cursor$]);
+  const cursorSubscriptionRef = useRef<Subscription>(null);
+  const dynamicsRef = useRef<Dynamics>(new Dynamics());
+
   const interactionStreamRef = useRef<Subject<InteractionMessage>>(
     new Subject()
   );
@@ -36,6 +39,7 @@ const Container = () => {
     y: 100,
   });
    */
+
   const [windowDimensions, setWindowDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -76,6 +80,10 @@ const Container = () => {
     };
   }, []);
 
+  useEffect(() => {
+    subscribeToCursor();
+  }, [settings.handedness]);
+
   /*
   useEffect(() => {
     function handleMouseMove(e: MouseEvent) {
@@ -94,20 +102,30 @@ const Container = () => {
   }, []);
    */
 
-  function handleVisionData(data: ComputerVisionData) {
-    if (once.current === 0) {
-      once.current = 1;
+  function subscribeToCursor(): void {
+    if (cursorSubscriptionRef.current !== null) {
+      cursorSubscriptionRef.current.unsubscribe();
+    }
 
-      const dynamics = new Dynamics();
-      dynamics.attachToData(data);
-      dynamics.cursor.subscribe((cursorPt) => {
+    // @ts-ignore
+    cursorSubscriptionRef.current = dynamicsRef.current
+      .ambidextrousCursor(settings.handedness, 0.5)
+      .subscribe((cursorPt) => {
         if (!visionReady) {
           setVisionReady(true);
         }
         stores.actions.updateCursor(cursorPt);
       });
+  }
 
-      dynamics.handActions.subscribe((next) => {
+  function handleVisionData(data: ComputerVisionData) {
+    if (once.current === 0) {
+      once.current = 1;
+
+      dynamicsRef.current.attachToData(data);
+      subscribeToCursor();
+
+      dynamicsRef.current.handActions.subscribe((next) => {
         stores.actions.updateGesture(next);
         if (next === "hand_closed") {
           interactionStreamRef.current.next({ kind: "click" });

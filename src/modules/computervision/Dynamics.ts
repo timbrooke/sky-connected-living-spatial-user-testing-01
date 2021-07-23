@@ -20,7 +20,9 @@ import { estimateHandGesture } from "./FingerPoseHelper";
 import { averageLandmarks } from "./utils";
 import { getNow } from "../../utils/utils";
 
+// Wrist indexes flipped because video is flipped
 const rightWristIndex = 16;
+const leftWristIndex = 15;
 const cursorScale = 2000;
 const cursorOX = 960;
 const cursorOY = 540;
@@ -126,8 +128,55 @@ class Dynamics {
     );
   }
 
+  public eitherWrist(
+    preference: "right" | "left",
+    threshold = 0.5
+  ): Observable<Landmark> {
+    return this._resultStream.pipe(
+      map(({ data }) => {
+        let rightWrist: Landmark | undefined =
+          data.poseLandmarks[rightWristIndex];
+        const leftWrist = data.poseLandmarks[leftWristIndex];
+        if (preference === "right") {
+          if (rightWrist.visibility && rightWrist.visibility >= threshold) {
+            return rightWrist;
+          }
+          if (leftWrist.visibility && leftWrist.visibility >= threshold) {
+            return leftWrist;
+          }
+          return rightWrist;
+        } else {
+          if (leftWrist.visibility && leftWrist.visibility >= threshold) {
+            return leftWrist;
+          }
+          if (rightWrist.visibility && rightWrist.visibility >= threshold) {
+            return rightWrist;
+          }
+          return leftWrist;
+        }
+      }),
+      bufferCount(3, 1),
+      map(averageLandmarks)
+    );
+  }
+
   public get cursor(): Observable<CursorPoint> {
     return this.rightWrist.pipe(
+      map((landmark: Landmark) => {
+        const x = (landmark.x - 0.5) * -cursorScale + cursorOX;
+        const y = (landmark.y - 0.5) * cursorScale + cursorOY;
+        const visible =
+          landmark.visibility !== undefined && landmark.visibility > 0.5;
+        return { x, y, visible };
+      })
+    );
+  }
+
+  public ambidextrousCursor(
+    preference: "right" | "left",
+    threshold: number = 0.5
+  ) {
+    return this.eitherWrist(preference, threshold).pipe(
       map((landmark: Landmark) => {
         const x = (landmark.x - 0.5) * -cursorScale + cursorOX;
         const y = (landmark.y - 0.5) * cursorScale + cursorOY;
