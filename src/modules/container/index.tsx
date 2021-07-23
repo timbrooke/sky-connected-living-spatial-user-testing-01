@@ -143,7 +143,7 @@ const Container = () => {
         <div style={{ transform: "scale(-0.25,0.25) translate(100%,-100%)" }}>
           <ComputerVision
             getObservables={handleVisionData}
-            showCanvas={false}
+            showCanvas={true}
           />
         </div>
       </Layer>
