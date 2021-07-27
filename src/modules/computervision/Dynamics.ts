@@ -155,7 +155,8 @@ class Dynamics {
           return leftWrist;
         }
       }),
-      bufferCount(3, 1),
+      // Smooth position
+      bufferCount(5, 1),
       map(averageLandmarks)
     );
   }
