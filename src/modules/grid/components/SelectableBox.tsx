@@ -64,7 +64,7 @@ const Box: FC<BoxProps> = ({
       });
       await controlsA.start({
         scale: 1.12,
-        transition: { duration: 0.3, ease: "easeInOut" },
+        transition: { duration: 0.1, ease: "easeInOut" },
       });
     }
 
@@ -75,24 +75,24 @@ const Box: FC<BoxProps> = ({
             overRef.current = true;
             controlsA.start({
               scale: 1.12,
-              transition: { duration: 0.3, ease: "easeInOut" },
+              transition: { duration: 0.15, ease: "easeInOut" },
             });
             break;
           case "off":
             overRef.current = false;
-            if (!selectedRef.current) {
-              controlsA.start({
-                scale: 1,
-                transition: { duration: 0.4, ease: "easeInOut" },
-              });
-            }
+            //if (!selectedRef.current) {
+            controlsA.start({
+              scale: 1,
+              transition: { duration: 0.15, ease: "easeInOut" },
+            });
+            //}
             break;
           case "select":
             pushAnimation();
             selectedRef.current = true;
             controlsB.start({
-              opacity: 0.3,
-              transition: { duration: 0.3, ease: "easeInOut" },
+              opacity: 0.6,
+              transition: { duration: 0.15, ease: "easeInOut" },
             });
             break;
           case "unselect":
@@ -101,13 +101,13 @@ const Box: FC<BoxProps> = ({
             } else {
               controlsA.start({
                 scale: 1.0,
-                transition: { duration: 0.3, ease: "easeInOut" },
+                transition: { duration: 0.15, ease: "easeInOut" },
               });
             }
             selectedRef.current = false;
             controlsB.start({
               opacity: 0.0,
-              transition: { duration: 0.3, ease: "easeInOut" },
+              transition: { duration: 0.15, ease: "easeInOut" },
             });
             break;
           default:

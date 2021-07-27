@@ -14,7 +14,7 @@ import Dynamics from "../computervision/Dynamics";
 import { ComputerVisionData } from "../computervision/types";
 import { Dimmer, Loader } from "semantic-ui-react";
 
-const Wrapper = styled.div`
+const CursorWrapper = styled.div`
   overflow: hidden;
 `;
 
@@ -27,6 +27,7 @@ const Container = () => {
   const [visionCursor] = useRxState([stores.atoms.cursor$]);
   const cursorSubscriptionRef = useRef<Subscription>(null);
   const dynamicsRef = useRef<Dynamics>(new Dynamics());
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   const interactionStreamRef = useRef<Subject<InteractionMessage>>(
     new Subject()
@@ -82,6 +83,7 @@ const Container = () => {
 
   useEffect(() => {
     subscribeToCursor();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings.handedness]);
 
   /*
@@ -176,13 +178,16 @@ const Container = () => {
         </div>
       </Layer>
       <Layer>
-        <Wrapper>
-          <Cursor
-            x={chosenCursor.x}
-            y={chosenCursor.y}
-            visible={chosenCursor.visible}
-          />
-        </Wrapper>
+        <CursorWrapper>
+          <div ref={cursorRef}>
+            <Cursor
+              x={chosenCursor.x}
+              y={chosenCursor.y}
+              visible={chosenCursor.visible}
+              interactionStream$={interactionStreamRef.current}
+            />
+          </div>
+        </CursorWrapper>
       </Layer>
       <SettingsMenu />
     </ModuleContext.Provider>
