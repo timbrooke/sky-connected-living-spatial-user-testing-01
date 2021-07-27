@@ -1375,20 +1375,20 @@
   resolved "https://git.bskyb.com/api/v4/projects/10398/packages/npm/@ixd-group/common-services/-/@ixd-group/common-services-0.0.12.tgz#8b000b6a9d1065ec3692b9bb4d0d66891ce0ef8f"
   integrity sha1-iwALap0QZew2krm7TQ1miRzg748=
 
-"@ixd-group/common-stores@^0.0.14":
-  version "0.0.14"
-  resolved "https://git.bskyb.com/api/v4/projects/10398/packages/npm/@ixd-group/common-stores/-/@ixd-group/common-stores-0.0.14.tgz#6ddf2db17ea6c6c6ded033823c5e10dfb2a2284c"
-  integrity sha1-bd8tsX6mxsbe0DOCPF4Q37KiKEw=
+"@ixd-group/common-stores@^0.2.0":
+  version "0.2.0"
+  resolved "https://git.bskyb.com/api/v4/projects/10398/packages/npm/@ixd-group/common-stores/-/@ixd-group/common-stores-0.2.0.tgz#edd56b493a25702af3876b71be9b8a97483929d0"
+  integrity sha1-7dVrSTolcCrzh2txvpuKl0g5KdA=
 
 "@ixd-group/react-utils@^0.0.7":
   version "0.0.7"
   resolved "https://git.bskyb.com/api/v4/projects/10398/packages/npm/@ixd-group/react-utils/-/@ixd-group/react-utils-0.0.7.tgz#6b596fa417d15434333c8d3174d18f40e7edc828"
   integrity sha1-a1lvpBfRVDQzPI0xdNGPQOftyCg=
 
-"@ixd-group/rx-utils@^0.0.17":
-  version "0.0.17"
-  resolved "https://git.bskyb.com/api/v4/projects/10398/packages/npm/@ixd-group/rx-utils/-/@ixd-group/rx-utils-0.0.17.tgz#030bdce3f87f369fea7032f321c6e9b1a9ea8738"
-  integrity sha1-Awvc4/h/Np/qcDLzIcbpsanqhzg=
+"@ixd-group/rx-utils@^0.0.18":
+  version "0.0.18"
+  resolved "https://git.bskyb.com/api/v4/projects/10398/packages/npm/@ixd-group/rx-utils/-/@ixd-group/rx-utils-0.0.18.tgz#17e67de583b9827784bf6bc4cf401ed2e67b9e61"
+  integrity sha1-F+Z95YO5gneEv2vEz0Ae0uZ7nmE=
 
 "@jest/console@^26.6.2":
   version "26.6.2"
@@ -1571,10 +1571,10 @@
   resolved "https://registry.yarnpkg.com/@mediapipe/drawing_utils/-/drawing_utils-0.3.1620248257.tgz#b39dfd235e7cf520e3e39d8b2bac2c5d717a7158"
   integrity sha512-s598oo1K6C62mX3rWXJ7n1RJFdXjyQn3f6CeI+lU6kD69MVyBcV3hdmO5LnEZlCw5NRDANtaM8WAOuqZHaldLg==
 
-"@mediapipe/pose@^0.4.1624666670":
-  version "0.4.1624666670"
-  resolved "https://registry.yarnpkg.com/@mediapipe/pose/-/pose-0.4.1624666670.tgz#fb6351e1477703b4bc560757e1db1eb0b17e4a29"
-  integrity sha512-DKROLwNi3DISXIZfnOVF87ObOZ7scaa+juPIDbwy+O3kWIwg0XSkAMkwNGJ+YRETL6QZYNH3KoAEuWS6itxIAw==
+"@mediapipe/pose@^0.4.1627343400":
+  version "0.4.1627343400"
+  resolved "https://registry.yarnpkg.com/@mediapipe/pose/-/pose-0.4.1627343400.tgz#11b492ff93a2f3488024beef88f74a1421f57bd9"
+  integrity sha512-uK6zquikhDXw+HQbVoeRXzfV56zbC3+h7pJZtIRLqDeHbbumC6hEhE99nnhmxg3R6+01c4RYDVWXXX7rkz5HlA==
 
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
@@ -1790,35 +1790,35 @@
   dependencies:
     rimraf "^3.0.2"
 
-"@tensorflow/tfjs-backend-cpu@3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.7.0.tgz#146ad00a8fffdf4794f9b1a0bfc080cddba96836"
-  integrity sha512-ZTs2ak9UDL/1CgUDsWn1g711G2X4Crwivbj+KxBZahlcM/OADYS3I0LZb7Q0IGnlGZsVoAFDWuywYw62Pgj9Tg==
+"@tensorflow/tfjs-backend-cpu@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.8.0.tgz#1b0655d5ca1b57370c1ea9586d571f3d63ca7393"
+  integrity sha512-iSwHrqX0Ixh1kelfmxIgChKft/KrcZk9EMHQcX+878XnX7mxB2HfWUqfiJVIcq+Fyr4I3oE4ncbbpmlKMxA85A==
   dependencies:
     "@types/seedrandom" "2.4.27"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-backend-webgl@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-3.7.0.tgz#6f2ac996dbbb31bfe55c770afc21fc91cc4ba083"
-  integrity sha512-D1B85XJgcuvpaGWH2gUjOzIW/cKiT4jQaZcu99g3tOpaMVO4Ctz4mmPKhflr+AoHRVfLQbIvf6LT6fmWxbgFqw==
+"@tensorflow/tfjs-backend-webgl@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-3.8.0.tgz#35fc3c69979805a0f84a5ffa99fe431512c72f6b"
+  integrity sha512-Pjv+oWPf+7YS8kz/UFh2QBeD3F74R63AEU48a44LVh63YHXvdRg/M/Mvhjd55Oe0crDbBLej287SgVB8DHjUXg==
   dependencies:
-    "@tensorflow/tfjs-backend-cpu" "3.7.0"
+    "@tensorflow/tfjs-backend-cpu" "3.8.0"
     "@types/offscreencanvas" "~2019.3.0"
     "@types/seedrandom" "2.4.27"
     "@types/webgl-ext" "0.0.30"
     "@types/webgl2" "0.0.5"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-converter@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-3.7.0.tgz#86661837dafe1c863b374d87bf5801e19c169b22"
-  integrity sha512-WpqTsOYwasu+ABLWeH4u5942oTRugH2dBGAYnOUuNMM8pu7LDWwC2qoZ1Q3+Ev2HWc7gyT8JPGqrKoULcCDdhw==
+"@tensorflow/tfjs-converter@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-3.8.0.tgz#78dd1c96acd775ceb112cd0c30deb5120a8a7536"
+  integrity sha512-IWalZtKNfsSHt9He3Tvfje71gwMnFg5msQEiEnAtVnz1Zly0Yi0mycGLp5TPyqPhZCcJ+i9OhgkAlL4sbjP1hw==
 
-"@tensorflow/tfjs-core@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-3.7.0.tgz#2c215a57af28f148af43a7dc98919200a9d4c56b"
-  integrity sha512-wG5d/oyjU9WC7E9ZhHxVyRyg/OTjwfbpBzjfRMCa93nxDTCTqf4h6ZHYsNHQ4NOP9yCltBnKIXOWk5aiy+oY1Q==
+"@tensorflow/tfjs-core@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-3.8.0.tgz#b7390db21bbcbf4c3da0c540d9318164d987767c"
+  integrity sha512-0VKqNpnTiXIeOql3dnEyPOxKA9yDA366onv3sphm6k8KAzkr+is+GHOHzmo8mL7+AujiOb6o0J7BYhr7yvpNjA==
   dependencies:
     "@types/long" "^4.0.1"
     "@types/offscreencanvas" "~2019.3.0"
@@ -2052,10 +2052,19 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.0":
+"@types/react@*":
   version "17.0.14"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.14.tgz#f0629761ca02945c4e8fea99b8177f4c5c61fb0f"
   integrity sha512-0WwKHUbWuQWOce61UexYuWTGuGY/8JvtUe/dtQ6lR4sZ3UiylHotJeWpf3ArP9+DSGUoLY3wbU59VyMrJps5VQ==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.15":
+  version "17.0.15"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.15.tgz#c7533dc38025677e312606502df7656a6ea626d0"
+  integrity sha512-uTKHDK9STXFHLaKv6IMnwp52fm0hwU+N89w/p9grdUqcFA6WuqDyPhaWopbNyE1k/VhgzmHl8pu1L4wITtmlLw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"

@@ -107,7 +107,7 @@ const Container = () => {
       cursorSubscriptionRef.current.unsubscribe();
     }
 
-    // @ts-ignore
+    // @ts-ignoreyarn n
     cursorSubscriptionRef.current = dynamicsRef.current
       .ambidextrousCursor(settings.handedness, 0.5)
       .subscribe((cursorPt) => {
