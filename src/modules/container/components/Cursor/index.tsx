@@ -12,12 +12,12 @@ type CursorProps = {
 
 const cursorAnimation = [
   { transform: "scale(1)" },
-  { transform: "scale(0.5)" },
+  { transform: "scale(0.8)", offset:0.333 },
   { transform: "scale(1)" },
 ];
 
 const animationTiming = {
-  duration: 100,
+  duration: 150,
   iterations: 1,
 };
 
