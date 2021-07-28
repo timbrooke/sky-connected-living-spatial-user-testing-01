@@ -91,7 +91,7 @@ const Box: FC<BoxProps> = ({
             pushAnimation();
             selectedRef.current = true;
             controlsB.start({
-              opacity: 0.6,
+              opacity: 0.75,
               transition: { duration: 0.15, ease: "easeInOut" },
             });
             break;
