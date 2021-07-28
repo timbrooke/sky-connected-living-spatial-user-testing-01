@@ -14,7 +14,7 @@ export const defaultSettings: Settings = {
   interactionMode: "Standard",
   spacing: 0.25,
   handedness: "right",
-  showVideo: false,
+  showVideo: true,
 };
 
 export const createStores = () => {
