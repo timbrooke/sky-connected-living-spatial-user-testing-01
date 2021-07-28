@@ -168,17 +168,62 @@ function proximityOverBox(
   return [boxID];
 }
 
+function circleRect(
+  cx: number,
+  cy: number,
+  radius: number,
+  rx: number,
+  ry: number,
+  rw: number,
+  rh: number
+) {
+  // temporary variables to set edges for testing
+  let testX = cx;
+  let testY = cy;
+
+  // which edge is closest?
+  if (cx < rx) testX = rx;
+  // test left edge
+  else if (cx > rx + rw) testX = rx + rw; // right edge
+  if (cy < ry) testY = ry;
+  // top edge
+  else if (cy > ry + rh) testY = ry + rh; // bottom edge
+
+  // get distance from closest edges
+  let distX = cx - testX;
+  let distY = cy - testY;
+  let distance = Math.sqrt(distX * distX + distY * distY);
+
+  // if the distance is less than the radius, collision!
+  if (distance <= radius) {
+    return true;
+  }
+  return false;
+}
+
 function standardOverBox(
   cursor: { x: number; y: number },
   boxData: BoxData[]
 ): string[] {
   const boxIDs: string[] = [];
   boxData.forEach((b) => {
+    /*
     const inside =
       cursor.x >= b.x &&
       cursor.x <= b.x + b.boxWidth &&
       cursor.y >= b.y &&
       cursor.y <= b.y + b.boxHeight;
+     */
+
+    const inside = circleRect(
+      cursor.x,
+      cursor.y,
+      30,
+      b.x,
+      b.y,
+      b.boxWidth,
+      b.boxHeight
+    );
     if (inside) {
       boxIDs.push(b.id);
     }

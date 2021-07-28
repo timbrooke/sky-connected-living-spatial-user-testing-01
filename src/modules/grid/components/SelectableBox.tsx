@@ -59,11 +59,11 @@ const Box: FC<BoxProps> = ({
   useEffect(() => {
     async function pushAnimation() {
       await controlsA.start({
-        scale: 1.06,
+        scale: 1.12,
         transition: { duration: 0.05, ease: "easeInOut" },
       });
       await controlsA.start({
-        scale: 1.12,
+        scale: 1.24,
         transition: { duration: 0.1, ease: "easeInOut" },
       });
     }
@@ -74,7 +74,7 @@ const Box: FC<BoxProps> = ({
           case "over":
             overRef.current = true;
             controlsA.start({
-              scale: 1.12,
+              scale: 1.24,
               transition: { duration: 0.15, ease: "easeInOut" },
             });
             break;
@@ -140,7 +140,7 @@ const Box: FC<BoxProps> = ({
           height,
           borderRadius: corner,
           position: "absolute",
-          background: "black",
+          background: "#4C9BFF",
         }}
       />
     </motion.div>

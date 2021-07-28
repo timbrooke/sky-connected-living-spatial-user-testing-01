@@ -23,7 +23,7 @@ import { getNow } from "../../utils/utils";
 // Wrist indexes flipped because video is flipped
 const rightWristIndex = 16;
 const leftWristIndex = 15;
-const cursorScale = 2000;
+const cursorScale = 2250;
 const cursorOX = 960;
 const cursorOY = 540;
 
@@ -156,7 +156,7 @@ class Dynamics {
         }
       }),
       // Smooth position
-      bufferCount(5, 1),
+      bufferCount(10, 1),
       map(averageLandmarks)
     );
   }
