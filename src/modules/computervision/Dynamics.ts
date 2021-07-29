@@ -17,7 +17,11 @@ import {
 } from "./types";
 import { AnnotatedPrediction } from "@tensorflow-models/handpose";
 import { estimateHandGesture } from "./FingerPoseHelper";
-import { averageLandmarks } from "./utils";
+import {
+  AnnotatedLandmark,
+  averageLandmarks,
+  averageLandmarks2,
+} from "./utils";
 import { getNow } from "../../utils/utils";
 
 // Wrist indexes flipped because video is flipped
@@ -74,7 +78,15 @@ class Dynamics {
   public get singleHandGesture(): Observable<TimedGesture> {
     return this.handGestures.pipe(
       map(({ t, gestures }) => {
+
+
+
+
         if (gestures.length > 0) {
+
+          const list = gestures.map((g)=> g.name)
+          console.log(list)
+
           let winner = "";
           let scoreThreshold = 8;
           gestures.forEach((g) => {
@@ -133,31 +145,35 @@ class Dynamics {
     threshold = 0.5
   ): Observable<Landmark> {
     return this._resultStream.pipe(
-      map(({ data }) => {
-        let rightWrist: Landmark | undefined =
-          data.poseLandmarks[rightWristIndex];
-        const leftWrist = data.poseLandmarks[leftWristIndex];
-        if (preference === "right") {
-          if (rightWrist.visibility && rightWrist.visibility >= threshold) {
-            return rightWrist;
+      map(({ data }): AnnotatedLandmark => {
+        let leftWrist: Landmark | undefined = undefined;
+        let rightWrist: Landmark | undefined = undefined;
+        if (data.poseLandmarks) {
+          rightWrist = data.poseLandmarks[rightWristIndex];
+          leftWrist = data.poseLandmarks[leftWristIndex];
+          if (preference === "right") {
+            if (rightWrist.visibility && rightWrist.visibility >= threshold) {
+              return { side: "right", landmark: rightWrist };
+            }
+            if (leftWrist.visibility && leftWrist.visibility >= threshold) {
+              return { side: "left", landmark: leftWrist };
+            }
+            return { side: "right", landmark: rightWrist };
+          } else {
+            if (leftWrist.visibility && leftWrist.visibility >= threshold) {
+              return { side: "left", landmark: leftWrist };
+            }
+            if (rightWrist.visibility && rightWrist.visibility >= threshold) {
+              return { side: "right", landmark: rightWrist };
+            }
+            return { side: "left", landmark: leftWrist };
           }
-          if (leftWrist.visibility && leftWrist.visibility >= threshold) {
-            return leftWrist;
-          }
-          return rightWrist;
-        } else {
-          if (leftWrist.visibility && leftWrist.visibility >= threshold) {
-            return leftWrist;
-          }
-          if (rightWrist.visibility && rightWrist.visibility >= threshold) {
-            return rightWrist;
-          }
-          return leftWrist;
         }
+        return { side: "none" };
       }),
       // Smooth position
-      bufferCount(10, 1),
-      map(averageLandmarks)
+      bufferCount(6, 1),
+      map(averageLandmarks2)
     );
   }
 
